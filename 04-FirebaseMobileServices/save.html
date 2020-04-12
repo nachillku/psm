@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
+
+</head>
+
+<body>
+
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyAY3WdlFaY9Tgril8J-flHUGT5iD1k_3Z8",
+            authDomain: "psm-04-ba46c.firebaseapp.com",
+            databaseURL: "https://psm-04-ba46c.firebaseio.com",
+            projectId: "psm-04-ba46c",
+            storageBucket: "psm-04-ba46c.appspot.com",
+            messagingSenderId: "589429080141",
+            appId: "1:589429080141:web:bb1ddcda4b4f5f36339c04"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        var firestore = firebase.firestore();
+
+        var json = "./data_user.json"
+        fetch(json)
+            .then(response => response.json())
+            .then(json => {
+
+                for (let item of json) {
+                    const data = firestore.doc('users/user' + item.id);
+
+                    data.set({
+                        id: item.id,
+                        first_name: item.first_name,
+                        last_name: item.last_name,
+                        username: item.username,
+                        email: item.email,
+                        password: item.password
+                    }).then(
+                        console.log('Added' + item.id)
+                    ).catch(function (error) {
+                        console.log("Error: ", error)
+                    })
+
+                }
+            })
+    </script>
+
+</body>
+
+</html>
