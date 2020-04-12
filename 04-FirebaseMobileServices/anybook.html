@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
+
+</head>
+
+<body>
+
+    <div id="book">
+        <form action="">
+            <span>Genre: </span>
+            <input type="text" id="genre">
+            <br> <br>
+            <span>ISBN: </span>
+            <input type="text" id="isbn">
+            <br> <br>
+            <span>Name: </span>
+            <input type="text" id="named">
+            <br> <br>
+            <span>Surname: </span>
+            <input type="text" id="surname">
+            <br> <br>
+            <span>Title: </span>
+            <input type="text" id="title">
+            <br> <br>
+            <span>Year: </span>
+            <input type="text" id="year">
+            <br> <br>
+            <input type="button" id="saveButton" value="Save">
+        </form>
+
+        <button id="loadButton">Load</button>
+        <div id="outputBook"></div>
+
+    </div>
+
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyAY3WdlFaY9Tgril8J-flHUGT5iD1k_3Z8",
+            authDomain: "psm-04-ba46c.firebaseapp.com",
+            databaseURL: "https://psm-04-ba46c.firebaseio.com",
+            projectId: "psm-04-ba46c",
+            storageBucket: "psm-04-ba46c.appspot.com",
+            messagingSenderId: "589429080141",
+            appId: "1:589429080141:web:bb1ddcda4b4f5f36339c04"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        var firestore = firebase.firestore();
+
+        const docRef = firestore.doc("books/book");
+        const outputBook = document.querySelector('#outputBook');
+        const loadButton = document.querySelector('#loadButton');
+        const saveButton = document.querySelector('#saveButton');
+
+        loadButton.addEventListener("click", function () {
+            docRef.get().then(function (doc) {
+                if (doc && doc.exists) {
+                    const myData = doc.data()
+                    for (const [field, value] of Object.entries(myData)) {
+                        outputBook.innerHTML += `<b>${field}</b>: ${value} <br>`
+                    }
+                }
+            }).catch(function (error) {
+                console.log("error: ", error)
+            })
+        })
+
+        saveButton.addEventListener("click", function () {
+            docRef.set({
+                genre: genre.value.toString(),
+                isbn: isbn.value.toString(),
+                name: named.value.toString(),
+                surname: surname.value.toString(),
+                title: title.value.toString(),
+                year: year.value.toString()
+            }).catch(function (error) {
+                console.log("error: ", error)
+            })
+        });
+    </script>
+
+</body>
+
+</html>
