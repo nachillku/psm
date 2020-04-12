@@ -12,8 +12,8 @@
 <body>
 
     <div id="book">
-        <button id="loadBook">Load</button>
-        <div id="loadedBook"></div>
+        <button id="loadButton">Load</button>
+        <div id="outputBook"></div>
     </div>
 
     <script>
@@ -31,16 +31,16 @@
 
         var firestore = firebase.firestore();
 
-        const data = firestore.doc("books/book");
-        const bookText = document.querySelector('#loadedBook')
-        const loadButton = document.querySelector('#loadBook')
+        const docRef = firestore.doc("books/book");
+        const outputBook = document.querySelector('#outputBook')
+        const loadButton = document.querySelector('#loadButton')
 
         loadButton.addEventListener("click", function () {
-            data.get().then(function (doc) {
+            docRef.get().then(function (doc) {
                 if (doc && doc.exists) {
                     const myData = doc.data()
                     for (const [field, value] of Object.entries(myData)) {
-                        bookText.innerHTML += `<b>${field}</b>: ${value} <br>`
+                        outputBook.innerHTML += `<b>${field}</b>: ${value} <br>`
                     }
                 }
             }).catch(function (error) {
